@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject playerAtk;
+    public int dano;
     public float speedRotation;
     public float speed;
     Rigidbody rb;
@@ -44,6 +46,21 @@ public class PlayerController : MonoBehaviour
     void Atacar() {
         if (Input.GetButtonDown("Fire1")) { 
             animator.SetTrigger("Atk");
+        }
+    }
+
+    public void AtivarAtk() { 
+        playerAtk.SetActive(true);
+    }
+
+    public void DesativarAtk() { 
+        playerAtk.SetActive(false);
+    }
+
+    private void OnTriggerEnter(Collider collider) {
+        if (collider.tag == "Inimigo") { 
+            Inimigo inimgo = collider.GetComponent<Inimigo>();
+            inimgo.PerderVida(dano);
         }
     }
 
