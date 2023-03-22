@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public string PlayerNumber;
     public Image healthBar;
 
     public GameObject playerAtk;
@@ -35,8 +36,8 @@ public class PlayerController : MonoBehaviour
     }
 
     void Movimento() {
-        float hAxis = Input.GetAxis("Horizontal");
-        float vAxis = Input.GetAxis("Vertical");
+        float hAxis = Input.GetAxis("Horizontal"+PlayerNumber);
+        float vAxis = Input.GetAxis("Vertical" + PlayerNumber);
 
         Vector3 move = new Vector3(hAxis, 0, vAxis);
 
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void Atacar() {
-        if (Input.GetButtonDown("Fire1")) { 
+        if (Input.GetButtonDown("Fire1" + PlayerNumber)) { 
             animator.SetTrigger("atk");
         }
     }
