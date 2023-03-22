@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public Image healthBar;
+
     public GameObject playerAtk;
     public int dano;
     public float speedRotation;
     public float speed;
     public int vida;
+    int maxVida;
     Rigidbody rb;
     Animator animator;
     bool morte = false;
     // Start is called before the first frame update
     void Start()
     {
+        maxVida = vida;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
@@ -22,6 +27,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        VerificaVida();
         if(morte == false) { 
             Movimento();
             Atacar();
@@ -78,6 +84,10 @@ public class PlayerController : MonoBehaviour
                 Morte();
             }
         }
+    }
+
+    void VerificaVida() {
+        healthBar.fillAmount = (float)vida / (float)maxVida;
     }
 
     void Morte()

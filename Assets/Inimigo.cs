@@ -67,7 +67,7 @@ public class Inimigo : MonoBehaviour
         GetComponent<Rigidbody>().useGravity = false;
         morte = true;
         animator.SetTrigger("die");
-        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
     }
 
     public void AtivarAtk()

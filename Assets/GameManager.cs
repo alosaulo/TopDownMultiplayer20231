@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject prefabSlime;
+    public List<Transform> Spawns;
+    public float tempoDeSpawn;
+
     public PlayerController Player;
 
     public static GameManager instance;
@@ -21,6 +25,27 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Spawnar();
     }
+
+    bool spawnar = false;
+    float contaSpawn;
+    void Spawnar() {
+        if (spawnar == false)
+        {
+            contaSpawn += Time.deltaTime;
+            if (contaSpawn >= tempoDeSpawn)
+            {
+                contaSpawn = 0;
+                spawnar = true;
+            }
+        }
+        else 
+        {
+            int spawnAleatorio = Random.Range(0, Spawns.Count);
+            Instantiate(prefabSlime, Spawns[spawnAleatorio].transform.position,Quaternion.identity);
+            spawnar = false;
+        }
+    }
+
 }
