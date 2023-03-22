@@ -8,9 +8,10 @@ public class PlayerController : MonoBehaviour
     public int dano;
     public float speedRotation;
     public float speed;
+    public int vida;
     Rigidbody rb;
     Animator animator;
-
+    bool morte = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,8 +22,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movimento();
-        Atacar();
+        if(morte == false) { 
+            Movimento();
+            Atacar();
+        }
     }
 
     void Movimento() {
@@ -45,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void Atacar() {
         if (Input.GetButtonDown("Fire1")) { 
-            animator.SetTrigger("Atk");
+            animator.SetTrigger("atk");
         }
     }
 
@@ -64,4 +67,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void PerderVida(int dano)
+    {
+        if (morte == false)
+        {
+            vida -= dano;
+            animator.SetTrigger("dano");
+            if (vida <= 0)
+            {
+                Morte();
+            }
+        }
+    }
+
+    void Morte()
+    {
+        animator.SetBool("dano", false);
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Rigidbody>().useGravity = false;
+        morte = true;
+        animator.SetTrigger("die");
+    }
 }
