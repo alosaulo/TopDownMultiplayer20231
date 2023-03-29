@@ -5,10 +5,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject prefabSlime;
+    
     public List<Transform> Spawns;
+    
     public float tempoDeSpawn;
 
-    public PlayerController Player;
+    public List<PlayerController> Players;
 
     public static GameManager instance;
 

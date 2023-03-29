@@ -99,4 +99,9 @@ public class PlayerController : MonoBehaviour
         morte = true;
         animator.SetTrigger("die");
     }
+
+    public bool estahMorto() {
+        return morte;
+    }
+
 }

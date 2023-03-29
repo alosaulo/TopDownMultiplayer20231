@@ -6,20 +6,25 @@ using UnityEngine.AI;
 public class Inimigo : MonoBehaviour
 {
     public GameObject inimigoAtk;
-    public Transform player;
+    public Transform playerTarget;
 
     public int vida;
     
     Animator animator;
     NavMeshAgent agent;
 
+    PlayerController[] players;
+
     bool morte = false;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameManager.instance.Player.transform;
+        players = GameManager.instance.Players.ToArray();
+
+        playerTarget = players[0].transform;
 
         animator = GetComponent<Animator>();
+
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -33,11 +38,13 @@ public class Inimigo : MonoBehaviour
 
     void IA() 
     {
-        float distancia = Vector3.Distance(transform.position, player.position);
+        GetPlayerProx();
+
+        float distancia = Vector3.Distance(transform.position, playerTarget.position);
         
         if (distancia > 2)
         {
-            agent.SetDestination(player.position);
+            agent.SetDestination(playerTarget.position);
             animator.SetBool("run", true);
             animator.SetBool("atk", false);
         }
@@ -61,13 +68,13 @@ public class Inimigo : MonoBehaviour
     }
 
     void Morte() {
-        DesativarAtk();
+        animator.SetTrigger("die");
         animator.SetBool("dano", false);
         GetComponent<Collider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         morte = true;
-        animator.SetTrigger("die");
         agent.isStopped = true;
+        DesativarAtk();
     }
 
     public void AtivarAtk()
@@ -86,6 +93,21 @@ public class Inimigo : MonoBehaviour
         {
             PlayerController playerController = collider.GetComponent<PlayerController>();
             playerController.PerderVida(1);
+        }
+    }
+
+    void GetPlayerProx() {
+        float distancia = float.MaxValue;
+        for (int i = 0; i < players.Length; i++)
+        {
+            float distanciaPlayer = Vector3.Distance(transform.position, 
+                players[i].transform.position);
+            
+            if (distanciaPlayer < distancia && !players[i].estahMorto()) 
+            { 
+                distancia = distanciaPlayer;
+                playerTarget = players[i].transform;
+            }
         }
     }
 
